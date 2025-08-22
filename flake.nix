@@ -25,12 +25,32 @@
           systemLayer = import ./lib {
             inherit nixpkgs;
           };
+          pkgs = import nixpkgs { system = "x86_64-linux"; };
         in
-        (systemLayer.makeSystemLayer {
-          modules = [
-            ./configuration.nix
-          ];
-        }).config.system.build.etcMetadataImage;
+        pkgs.linkFarm "build"
+          (systemLayer.makeSystemLayer {
+            modules = [
+              ./configuration.nix
+            ];
+          }).config.system.build;
+
+      packages.x86_64-linux.activateLayer =
+        let
+          pkgs = import nixpkgs { system = "x86_64-linux"; };
+        in
+        pkgs.writeShellScriptBin "activate" ''
+          set -euxo pipefail
+
+          store_path=$(nix \
+            --experimental-features 'nix-command flakes' \
+            build --no-link --print-out-paths $1)
+          echo $store_path
+
+          sudo mkdir -p /.rw-etc/work
+          tmpMetadataMount=$(sudo TMPDIR="/run" mktemp --directory -t nix-system-layer-etc-metadata.XXXXXXXXXX)
+          sudo mount --type erofs --options ro,nodev,nosuid $store_path/etcMetadataImage $tmpMetadataMount
+          sudo mount -t overlay -o lowerdir=$tmpMetadataMount,upperdir=/etc,redirect_dir=on,metacopy=on,workdir=/.rw-etc/work overlay /etc
+        '';
 
       packages.x86_64-linux.activate =
         let

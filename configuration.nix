@@ -9,6 +9,7 @@
   config = {
     fonts.packages = [
       pkgs.iosevka
+      pkgs.fira-code
     ];
 
     environment = {

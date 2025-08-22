@@ -78,7 +78,7 @@ in
       mkdir -p "$out"
       ${lib.concatMapStringsSep "\n" (
         etcEntry:
-        lib.escapeSheletclArgs [
+        lib.escapeShellArgs [
           "makeEtcEntry"
           # Force local source paths to be added to the store
           "${etcEntry.source}"

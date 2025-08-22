@@ -21,7 +21,7 @@
       <?xml version='1.0'?>
       <!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>
       <fontconfig>
-        ${pkgs.lib.concatStringsSep "\n" (map (font: "<dir>${font}</dir>") config.fonts.packages)}
+        ${pkgs.lib.concatStringsSep "\n  " (map (font: "<dir>${font}</dir>") config.fonts.packages)}
       </fontconfig>
     '';
   };

@@ -6,3 +6,12 @@ Overlay etc ?
 - Fonts
     - /etc/fonts/conf.d/00-nix-system-layer.conf
     - /etc/systemd/system/nix-system-layer{} ?
+
+
+## Mounting example
+
+```sh
+tmpMetadataMount=$(TMPDIR="/run" mktemp --directory -t nixos-etc-metadata.XXXXXXXXXX)
+sudo mount --type erofs --options ro,nodev,nosuid ./result/etcMetadataImage /run/etc-metadata.HA1GFvoSkn
+sudo mount -t overlay -o lowerdir=/run/etc-metadata.HA1GFvoSkn,upperdir=/testdir,redirect_dir=on,metacopy=on,workdir=/testdir-work overlay /testdir
+```
