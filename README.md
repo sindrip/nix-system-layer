@@ -15,3 +15,8 @@ tmpMetadataMount=$(TMPDIR="/run" mktemp --directory -t nixos-etc-metadata.XXXXXX
 sudo mount --type erofs --options ro,nodev,nosuid ./result/etcMetadataImage /run/etc-metadata.HA1GFvoSkn
 sudo mount -t overlay -o lowerdir=/run/etc-metadata.HA1GFvoSkn,upperdir=/testdir,redirect_dir=on,metacopy=on,workdir=/testdir-work overlay /testdir
 ```
+
+## Systemd mount
+Copy the nixSystemLayerEtcMetadata.mount file to /etc/systemd/system and enable the unit. The metadata will be automatically mounted on startup.
+
+Copy the etc.mount file to /etc/systemd/system and enable the unit. For now we are manually creating /.rw-etc (which should be moved to systemd)

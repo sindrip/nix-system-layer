@@ -1,0 +1,11 @@
+[Unit]
+RequiresMountsFor=/run/nixSystemLayerEtcMetadata
+
+[Mount]
+What=overlay
+Where=/etc
+Type=overlay
+Options=lowerdir=/run/nixSystemLayerEtcMetadata,upperdir=/etc,workdir=/.rw-etc/workdir,metacopy=on,redirect_dir=on
+
+[Install]
+WantedBy=local-fs.target

@@ -106,5 +106,4 @@ in
           fsck.erofs $out
         '';
   };
-
 }

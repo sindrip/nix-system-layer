@@ -1,0 +1,11 @@
+[Unit]
+RequiresMountsFor=/nix/store
+
+[Mount]
+What=/nix/store/58l2ii94pdypynyvkh9qndcmirhyvm3n-build/etcMetadataImage
+Where=/run/nixSystemLayerEtcMetadata
+Type=erofs
+Options=ro,nodev,nosuid
+
+[Install]
+WantedBy=local-fs.target
